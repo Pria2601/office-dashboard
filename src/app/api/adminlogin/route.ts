@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -10,11 +12,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Username and password are required" }, { status: 400 });
     }
 
-    const adminUsername = process.env.ADMIN_USERNAME;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!adminUsername || !adminPassword || !jwtSecret) {
+    const adminUsername = process.env.ADMIN_USERNAME || "assamofficeadmin";
+    const adminPassword = process.env.ADMIN_PASSWORD || "assamofficepassword";
+    const jwtSecret = process.env.JWT_SECRET || "randomsecret";
+//     console.log(username, password)
+// console.log(adminUsername, adminPassword)
+    if (!adminUsername || !adminPassword|| !jwtSecret ) {
       return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
     }
 

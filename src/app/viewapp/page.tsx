@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Header from "../Components/Header";
-
+import ProtectedRoute from "../protecteduser/page";
 interface Application {
   _id: string;
   fullName: string;
@@ -16,6 +16,7 @@ interface Application {
   documenturl?: string;
   status: string;
   notification: boolean;
+  refid: string;
 }
 
 export default function Home() {
@@ -57,7 +58,7 @@ export default function Home() {
   // Get unique categories for filter dropdown
   const categories = ["All", ...new Set(applications.map((app) => app.category))];
   
-  const cat = ["All", ...new Set(applications.map((app) => app.status))];
+  const cat = ["All", ...new Set(applications.map((app) => app.area))];
   // Filter applications based on selected category
   // const filteredApplications = selectedCategory === "All"
   //   ? applications
@@ -69,8 +70,7 @@ const filteredApplications = applications.filter((app) =>
 );
 
   return (
-    <>
-      <Header />
+    <><ProtectedRoute>
       <div className="max-w-5xl mx-auto p-6 min-h-screen bg-[#d9d9d9] rounded-lg shadow-md  text-teal-700">
         <h2 className="text-xl text-teal-700  font-bold mt-6">Application Status</h2>
         
@@ -98,19 +98,24 @@ const filteredApplications = applications.filter((app) =>
         </div>
 
         {/* Applications List */}
-        <table className="w-full mt-4 border-collapse border">
+        <div className="overflow-x-auto">
+
+        <table className=" table-auto w-full mt-4 border-collapse border">
           <thead className="bg-teal-700">
             <tr className="text-[#d9d9d9]">
+              <th className="border w-[100px] p-2">reference id</th>
               <th className="border p-2">Full Name</th>
               <th className="border p-2">Category</th>
               <th className="border p-2">Location</th>
               <th className="border p-2">Status</th>
               <th className="border p-2">Update</th>
+              <th className="border p-2">download details</th>
             </tr>
           </thead>
           <tbody>
             {filteredApplications.map((app) => (
               <tr key={app._id} className="border text-black bg-white">
+                <td className="border p-2">{app.refid}</td>
                 <td className="border p-2">{app.fullName}</td>
                 <td className="border p-2">{app.category}</td>
                 <td className="border p-2">{app.area}</td>
@@ -126,11 +131,15 @@ const filteredApplications = applications.filter((app) =>
                     ))}
                   </select>
                 </td>
+                <td className="border p-2">
+                  <button className="border ">Download</button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
+        </div>
+      </div></ProtectedRoute>
     </>
   );
 }

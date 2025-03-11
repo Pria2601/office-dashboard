@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Application from "@/models/application_model";
-
+import { v4 as uuidv4 } from "uuid";
 // CORS Headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*", // Adjust in production
@@ -18,12 +18,28 @@ export const createApplication = async (req: NextRequest): Promise<NextResponse>
 
   try {
     await connectDB();
+    const body = await req.json();
+
+    // Get the current year from the server
+    // const currentYear = new Date().toISOString().split('T')[0];
+    // console.log(currentYear);
+    const today = new Date();
+const currentYear = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+
+    // Ensure category is provided
+    const { category } = body;
+    if (!category) {
+      return NextResponse.json({ error: "Category is required." }, { status: 400 });
+    }
+
+    // Generate a unique number (last 4 digits from UUID)
+    const uniqueNumber = uuidv4().split("-")[0].slice(-4);
     
-    const body = await req.json(); // Fix: Await the JSON parsing
+    // Create refid: year_category_uniquenumber
+    const refid = `${currentYear}_${category}_${uniqueNumber}`;
 
-    // Validate required fields (Add field validation if necessary)
-
-    const newApplication = await Application.create(body); // Fix: Pass `body` directly
+    // Add refid to application data
+    const newApplication = await Application.create({ ...body, refid });
 
     return NextResponse.json(
       { message: "Application submitted", data: newApplication },
@@ -35,7 +51,7 @@ export const createApplication = async (req: NextRequest): Promise<NextResponse>
       { status: 500, headers: corsHeaders }
     );
   }
-};
+}
 
 // Get All Applications
 export const getApplications = async (req: NextRequest): Promise<NextResponse> => { // Fix: Accept `req` parameter

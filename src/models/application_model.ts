@@ -32,6 +32,7 @@ interface IApplication extends Document {
   documenturl?: string;
   status: StatusType;
   uploaded_by:String;
+  refid:String
 }
 
 // Mongoose Schema
@@ -62,7 +63,9 @@ const ApplicationSchema = new Schema<IApplication>(
       default: "",
     },
     status: { type: String, enum: STATUS_OPTIONS, default: "Pending" },
-    uploaded_by:{type:String}
+    uploaded_by:{type:String},
+    refid:{type:String}
+
   },
   { timestamps: true }
 );

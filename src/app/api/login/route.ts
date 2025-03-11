@@ -20,9 +20,13 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "User not found. Please sign up." }, { status: 404 });
     }
-    if(!user.approve){
-      return NextResponse.json({ error: "User not approved by admin. Please contact admin" }, { status: 404 });
-    }
+      if(user.status=="rejected"){
+        return NextResponse.json({ error: "User rejected by admin." }, { status: 404 });
+      }
+
+      if(user.status=="pending"){
+        return NextResponse.json({ error: "User's request is still pending . Please contact admin" }, { status: 404 });
+      }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
@@ -31,21 +35,21 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate JWT token
-    const token = jwt.sign(
-      { userId: user._id, phone: user.phone },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "7d" }
-    );
+    // const token = jwt.sign(
+    //   { userId: user._id, phone: user.phone },
+    //   process.env.JWT_SECRET as string
+      
+    // );
 
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-      console.log("Decoded Token:", decoded);
+      // const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+      // console.log("Decoded Token:", decoded);
      
     
 
     // Send response
     return NextResponse.json(
-      { message: "Login successful", token, user: { phone: user.phone, name: user.name, email: user.email } },
+      { message: "Login successful", token:"12345", user: { phone: user.phone, name: user.name, email: user.email } },
       { status: 200 }
     );
   } catch (error) {

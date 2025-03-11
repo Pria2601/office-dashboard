@@ -18,6 +18,7 @@ const Header = () => {
         <nav className="hidden md:flex space-x-6 text-gray-600">
           <NavItem label="Home" href="/" />
           <NavItem label="About" href="/about" />
+          <NavItem label="user dashboard" href="/dashboard" />
           <NavItem label="Notifications" href="/notifications" />
           <NavItem label="Contact Us" href="/contact" />
           <NavItem label="FAQ" href="/faq" />
@@ -43,10 +44,12 @@ const Header = () => {
         } w-full bg-white shadow-md`}
       >
         <ul className="flex flex-col space-y-4 p-4 text-gray-600">
-          <NavItem label="Home" href="/" />
+          <NavItem label="logout" href="/logout" />
+          <NavItem label="Home" href="/Home" />
           <NavItem label="About" href="/about" />
           <NavItem label="Notifications" href="/notifications" />
           <NavItem label="Contact Us" href="/contact" />
+          <NavItem label="user dashboard" href="/dashboard" />
           <NavItem label="FAQ" href="/faq" />
         </ul>
       </div>

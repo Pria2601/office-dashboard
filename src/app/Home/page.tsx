@@ -1,13 +1,13 @@
 import React from "react";
 import Link from "next/link"; // Import Link
-
+import ProtectedRoute from "../protecteduser/page";
 
 import { FaPlusCircle, FaClock, FaClipboardList } from "react-icons/fa";
 
 const Home = () => {
   
 
-  return (
+  return (<ProtectedRoute>
     <div className="min-h-screen bg-gray-100">
            {/* Hero Section */}
       <div className="bg-teal-700 text-white py-16 px-6 flex justify-center items-center">
@@ -46,7 +46,7 @@ const Home = () => {
           buttonText="Click to view"
         />
       </div>
-    </div>
+    </div></ProtectedRoute>
   );
 };
 

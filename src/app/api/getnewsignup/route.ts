@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
 
   try {
     // Fetch users where approve is false
-    const pendingUsers = await User.find({ approve: false }).select("-password").sort({ createdAt: 1 }); // Exclude password
+    const pendingUsers = await User.find().select("-password").sort({ createdAt: 1 }); // Exclude password
 
     return NextResponse.json({ users: pendingUsers }, { status: 200 });
   } catch (error) {

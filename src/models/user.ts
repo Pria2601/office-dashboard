@@ -1,12 +1,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-
 interface IUser extends Document {
   phone: string;
   name: string;
-  email:string;
+  email: string;
   password: string;
-  approve:boolean;
+  status: "approved" | "pending" | "rejected"; // Status field
 }
 
 // Mongoose Schema
@@ -22,7 +21,7 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    email:{
+    email: {
       type: String,
       unique: true,
       required: true,
@@ -32,14 +31,14 @@ const UserSchema = new Schema<IUser>(
       minlength: 6,
       required: true,
     },
-    approve: {
-      type: Boolean,
-      default:false
+    status: {
+      type: String,
+      enum: ["approved", "pending", "rejected"],
+      default: "pending",
     },
   },
   { timestamps: true }
 );
-
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 
